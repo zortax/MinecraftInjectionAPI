@@ -21,8 +21,11 @@ public class MinecraftTransformer {
 
     }
 
+    // this method will be called automatically as we told the McAgent to do so via arguments
     public static void onAgentLoaded() {
+        // add this class as a transformer to register our function hooks
         McAgent.addTransformer(MinecraftTransformer.class);
+        // call restransform() to modify the bytecode of the minecraft classes to activate our hooks
         McAgent.retransform();
     }
 
