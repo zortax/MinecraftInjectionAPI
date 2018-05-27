@@ -13,6 +13,14 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>nuition</id>
+            <name>nution</name>
+            <url>http://maven.nuiton.org/release</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.sun</groupId>
@@ -44,7 +52,7 @@
                     </descriptorRefs>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--plugin>
                 <artifactId>maven-install-plugin</artifactId>
                 <executions>
                     <execution>
@@ -64,7 +72,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
         </plugins>
     </build>
 
