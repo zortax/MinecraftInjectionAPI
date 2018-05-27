@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
 Can-Redefine-Classes: true
 Can-Retransform-Classes: true
-Main-Class: de.zortax.injectionapi.injector.RuntimeInjector
+Main-Class: de.zortax.injection.injector.RuntimeInjector

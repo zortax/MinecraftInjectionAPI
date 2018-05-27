@@ -1,4 +1,6 @@
-package de.zortax.injectionapi.mcp;// Created by leo on 27.05.18
+package de.zortax.injection.mcp;// Created by leo on 27.05.18
+
+import de.zortax.injection.api.Flags;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,19 +27,21 @@ public class McpManager {
 
         File f = new File("mappings/" + version + "/");
         if (f.exists() && f.isDirectory()) {
-            System.out.println("Mappings already downloaded... [SKIPPED]");
+            if (Flags.verbose)
+                System.out.println("Mappings already downloaded... [SKIPPED]");
             return;
         }
 
         try {
-
-            System.out.println("Downloading MCP mappings from " + mcpMappingLink + " ...");
+            if (Flags.verbose)
+                System.out.println("Downloading MCP mappings from " + mcpMappingLink + " ...");
             URL mcpUrl = new URL(mcpMappingLink);
             ReadableByteChannel rbc = Channels.newChannel(mcpUrl.openStream());
             FileOutputStream fos = new FileOutputStream("mcp-" + version + ".zip");
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 
-            System.out.println("Downloading SRG mappings from " + mcpSrgLink + " ...");
+            if (Flags.verbose)
+                System.out.println("Downloading SRG mappings from " + mcpSrgLink + " ...");
             URL srgUrl = new URL(mcpSrgLink);
             rbc = Channels.newChannel(srgUrl.openStream());
             fos = new FileOutputStream("srg-" + version + ".zip");
@@ -46,7 +50,8 @@ public class McpManager {
             File mappingsDir = new File("mappings/" + version + "/");
             if (!mappingsDir.exists() || !mappingsDir.isDirectory()) {
                 if (!mappingsDir.mkdirs()) {
-                    System.out.println("Couldn't create mappings directory...");
+                    if (Flags.verbose)
+                        System.out.println("Couldn't create mappings directory...");
                     return;
                 }
             }
@@ -54,7 +59,8 @@ public class McpManager {
             unzipFile("mcp-" + version + ".zip", "mappings/" + version + "/mcp/");
             unzipFile("srg-" + version + ".zip", "mappings/" + version + "/srg/");
 
-            System.out.println("Deleting downloaded ZIP files...");
+            if (Flags.verbose)
+                System.out.println("Deleting downloaded ZIP files...");
 
             File mcpZip = new File("mcp-" + version + ".zip");
             File srgZip = new File("srg-" + version + ".zip");
@@ -62,15 +68,18 @@ public class McpManager {
             srgZip.delete();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            if (Flags.verbose)
+                e.printStackTrace();
         }
 
-        System.out.println("Done!");
+        if (Flags.verbose)
+            System.out.println("Done!");
     }
 
     private static void unzipFile(String zipFile, String outputFolder){
 
-        System.out.println("Unzipping " + zipFile + " ...");
+        if (Flags.verbose)
+            System.out.println("Unzipping " + zipFile + " ...");
 
         byte[] buffer = new byte[1024];
 
@@ -79,7 +88,8 @@ public class McpManager {
             File folder = new File(outputFolder);
             if(!folder.exists()){
                 if (!folder.mkdir()) {
-                    System.out.println("Couldn't create mappings directory...");
+                    if (Flags.verbose)
+                        System.out.println("Couldn't create mappings directory...");
                     return;
                 }
             }
@@ -97,7 +107,8 @@ public class McpManager {
                 String fileName = ze.getName();
                 File newFile = new File(outputFolder + File.separator + fileName);
 
-                System.out.println("Extracting "+ newFile.getPath() + " ...");
+                if (Flags.verbose)
+                    System.out.println("Extracting "+ newFile.getPath() + " ...");
                 new File(newFile.getParent()).mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);
 
@@ -113,10 +124,12 @@ public class McpManager {
             zis.closeEntry();
             zis.close();
 
-            System.out.println("Done unzipping " + zipFile);
+            if (Flags.verbose)
+                System.out.println("Done unzipping " + zipFile);
 
         }catch(IOException ex){
-            ex.printStackTrace();
+            if (Flags.verbose)
+                ex.printStackTrace();
         }
     }
 
