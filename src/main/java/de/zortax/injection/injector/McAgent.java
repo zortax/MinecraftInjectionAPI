@@ -13,6 +13,17 @@ public class McAgent {
             System.out.println("Loading VM agent...");
         McpManager.downloadMappings(Flags.version, McpManager.MCP_MAPPINGS_LINK_1_8_9, McpManager.MCP_SRG_LINK_1_8_9);
         McpManager.loadMappings(Flags.version);
+
+        for(Class c : instrumentation.getAllLoadedClasses()){
+            if(c.getName().equalsIgnoreCase(McpManager.getWrappedClass("net/minecraft/client/Minecraft").getObfName())){
+                System.out.println("Found Minecraft main. " + c.getName());
+            }
+
+            
+
+
+        }
+
     }
 
 }
