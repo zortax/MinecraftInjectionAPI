@@ -1,7 +1,6 @@
 package de.zortax.injection.injector;// Created by leo on 27.05.18
 
 import com.sun.tools.attach.*;
-import de.zortax.injection.api.Flags;
 
 import java.io.File;
 import java.io.IOException;

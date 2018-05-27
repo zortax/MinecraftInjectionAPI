@@ -1,6 +1,6 @@
 package de.zortax.injection.mcp;// Created by leo on 27.05.18
 
-import de.zortax.injection.api.Flags;
+import de.zortax.injection.injector.Flags;
 
 import java.io.*;
 import java.net.URL;
@@ -60,7 +60,7 @@ public class McpManager {
                 String[] split = current.split(" ");
                 if (split[2].contains("$"))
                     continue;
-                if (Flags.verbose)
+                if (Flags.debug)
                     System.out.println("Loading SRG mapping for class " + split[1] + " ...");
                 WrappedClass wc = new WrappedClass(split[1], split[2]);
                 classes.put(split[2], wc);
@@ -68,7 +68,7 @@ public class McpManager {
             } else if (current.startsWith("FD:")) {
                 String[] split = current.split(" ");
                 String className = split[2].substring(0, split[2].lastIndexOf("/"));
-                if (Flags.verbose)
+                if (Flags.debug)
                     System.out.println("Loading SRG mapping field " + split[2].split("/")[split[2].split("/").length - 1] + " in class " + className + " ...");
                 WrappedClass wrappedClass = classes.get(className);
                 if (wrappedClass != null) {
@@ -78,7 +78,7 @@ public class McpManager {
             } else if (current.startsWith("MD: ")) {
                 String[] split = current.split(" ");
                 String className = split[3].substring(0, split[3].lastIndexOf("/"));
-                if (Flags.verbose)
+                if (Flags.debug)
                     System.out.println("Loading SRG mapping for method " + split[3].split("/")[split[3].split("/").length - 1] + "in class " + className + " ...");
                 WrappedClass wrappedClass = classes.get(className);
                 if (wrappedClass != null) {
@@ -96,7 +96,7 @@ public class McpManager {
             String className = fieldClasses.getOrDefault(split[0], null);
             if (className == null || className.contains("$"))
                 continue;
-            if (Flags.verbose)
+            if (Flags.debug)
                 System.out.println("Loading MCP mappings for field " + split[1] + " in class " + className + " ...");
             WrappedClass wrappedClass = classes.get(className);
             if (wrappedClass != null) {
@@ -110,7 +110,7 @@ public class McpManager {
             String className = functionClasses.getOrDefault(split[0], null);
             if (className == null || className.contains("$"))
                 continue;
-            if (Flags.verbose)
+            if (Flags.debug)
                 System.out.println("Loading MCP mappings for method " + split[1] + " in class " + className + " ...");
             WrappedClass wrappedClass = classes.get(className);
             if (wrappedClass != null) {
@@ -221,7 +221,7 @@ public class McpManager {
                 String fileName = ze.getName();
                 File newFile = new File(outputFolder + File.separator + fileName);
 
-                if (Flags.verbose)
+                if (Flags.debug)
                     System.out.println("Extracting "+ newFile.getPath() + " ...");
                 new File(newFile.getParent()).mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);

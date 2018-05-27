@@ -1,4 +1,4 @@
-package de.zortax.injection.api;// Created by leo on 27.05.18
+package de.zortax.injection.injector;// Created by leo on 27.05.18
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -7,6 +7,7 @@ import java.util.List;
 public final class Flags {
 
     public static boolean verbose = false;
+    public static boolean debug = false;
     public static String version = "1.8.9";
     public static String agentJar = "MinecraftInjectionAPI.jar";
     public static String vm = "net.minecraft.launchwrapper.Launch";
@@ -26,6 +27,8 @@ public final class Flags {
                 agentJar = it.next();
             else if (c.equalsIgnoreCase("--vm") && it.hasNext())
                 vm = it.next();
+            else if (c.equalsIgnoreCase("--debug"))
+                debug = true;
 
         }
 
