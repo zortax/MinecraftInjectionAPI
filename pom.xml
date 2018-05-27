@@ -52,27 +52,6 @@
                     </descriptorRefs>
                 </configuration>
             </plugin>
-            <!--plugin>
-                <artifactId>maven-install-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>install-external</id>
-                        <phase>clean</phase>
-                        <configuration>
-                            <file>${env.JAVA_HOME}/lib/tools.jar</file>
-                            <repositoryLayout>default</repositoryLayout>
-                            <groupId>com.sun</groupId>
-                            <artifactId>tools</artifactId>
-                            <version>1.7.0.13</version>
-                            <packaging>jar</packaging>
-                            <generatePom>true</generatePom>
-                        </configuration>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin-->
         </plugins>
     </build>
 
