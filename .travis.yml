@@ -1,0 +1,11 @@
+language: java
+jdk: oraclejdk8
+script: bash build.sh
+deploy:
+  provider: releases
+  prerelease: false
+  api_key: $API_KEY
+  file: MinecraftInjectionAPI.jar
+  skip_cleanup: true
+  on:
+    tags: true
