@@ -7,7 +7,8 @@ public class RuntimeInjector {
 
     public static void main(String[] args) {
         Flags.parseArgs(args);
-        McpManager.downloadMappings("1.8.9", McpManager.MCP_MAPPINGS_LINK_1_8_9, McpManager.MCP_SRG_LINK_1_8_9);
+        McpManager.downloadMappings(Flags.version, McpManager.MCP_MAPPINGS_LINK_1_8_9, McpManager.MCP_SRG_LINK_1_8_9);
+        McpManager.loadMappings(Flags.version);
     }
 
 }
