@@ -9,6 +9,7 @@ public final class Flags {
     public static boolean verbose = false;
     public static String version = "1.8.9";
     public static String agentJar = "MinecraftInjectionAPI.jar";
+    public static String vm = "net.minecraft.launchwrapper.Launch";
 
     public static void parseArgs(String[] args) {
 
@@ -19,11 +20,12 @@ public final class Flags {
 
             if (c.equalsIgnoreCase("--verbose"))
                 verbose = true;
-            else if ((c.equalsIgnoreCase("--version") || c.equals("-V")) && it.hasNext()) {
+            else if ((c.equalsIgnoreCase("--version") || c.equals("-V")) && it.hasNext())
                 version = it.next();
-            } else if ((c.equalsIgnoreCase("--agent") || c.equals("-A")) && it.hasNext() ) {
+            else if ((c.equalsIgnoreCase("--agent") || c.equals("-A")) && it.hasNext() )
                 agentJar = it.next();
-            }
+            else if (c.equalsIgnoreCase("--vm") && it.hasNext())
+                vm = it.next();
 
         }
 
