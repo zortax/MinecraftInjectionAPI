@@ -51,7 +51,7 @@
                         <id>install-external</id>
                         <phase>clean</phase>
                         <configuration>
-                            <file>${java.home}/lib/tools.jar</file>
+                            <file>${env.JAVA_HOME}/lib/tools.jar</file>
                             <repositoryLayout>default</repositoryLayout>
                             <groupId>com.sun</groupId>
                             <artifactId>tools</artifactId>
