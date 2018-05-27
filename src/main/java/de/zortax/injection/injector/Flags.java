@@ -11,6 +11,8 @@ public final class Flags {
     public static String version = "1.8.9";
     public static String agentJar = "MinecraftInjectionAPI.jar";
     public static String vm = "net.minecraft.launchwrapper.Launch";
+    public static String loadHookClass = null;
+    public static String loadHookMethod =null;
 
     public static void parseArgs(String[] args) {
 
@@ -29,6 +31,10 @@ public final class Flags {
                 vm = it.next();
             else if (c.equalsIgnoreCase("--debug"))
                 debug = true;
+            else if (c.equalsIgnoreCase("--load-hook-class") && it.hasNext())
+                loadHookClass = it.next();
+            else if (c.equalsIgnoreCase("--load-hook-method") && it.hasNext())
+                loadHookMethod = it.next();
 
         }
 

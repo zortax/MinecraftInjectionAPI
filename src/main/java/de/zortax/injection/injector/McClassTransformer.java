@@ -38,13 +38,13 @@ public class McClassTransformer implements ClassFileTransformer {
             classPool.appendClassPath(new LoaderClassPath(loader));
             classPool.appendClassPath(new LoaderClassPath(getClass().getClassLoader()));
 
-            classPool.importPackage(hookClass.substring(0, hookClass.lastIndexOf(".") - 1));
+            classPool.importPackage(hookClass.substring(0, hookClass.lastIndexOf(".")));
 
             CtClass ctClass = classPool.makeClass(new ByteArrayInputStream(classfileBuffer));
-            CtMethod ctMethod = ctClass.getDeclaredMethod(targetClass);
+            CtMethod ctMethod = ctClass.getDeclaredMethod(targetMethod);
 
             StringBuilder code = new StringBuilder();
-            code.append("{ ").append(hookClass.substring(hookClass.lastIndexOf(".") + 1, hookClass.length())).append(".").append(hookFunction).append("(); }");
+            code.append("{ ").append(hookClass, hookClass.lastIndexOf(".") + 1, hookClass.length()).append(".").append(hookFunction).append("(); }");
             if (before)
                 ctMethod.insertBefore(code.toString());
             else

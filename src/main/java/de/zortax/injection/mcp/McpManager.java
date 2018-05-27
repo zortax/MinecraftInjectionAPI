@@ -50,7 +50,7 @@ public class McpManager {
         }
 
         if (Flags.verbose)
-            System.out.println("\nLoading SRG mappings...\n");
+            System.out.println("\nLoading SRG mappings...");
 
         while (joinedScanner.hasNext()) {
 
@@ -90,6 +90,9 @@ public class McpManager {
 
         }
 
+        if (Flags.verbose)
+            System.out.println("Loading MCP mappings...");
+
         while (fieldsScanner.hasNext()) {
             String current = fieldsScanner.nextLine();
             String[] split = current.split(",");
@@ -117,6 +120,9 @@ public class McpManager {
                 wrappedClass.putFunctionName(split[0], split[1]);
             }
         }
+
+        if (Flags.verbose)
+            System.out.println("Done! All mappings loaded...");
 
 
     }
