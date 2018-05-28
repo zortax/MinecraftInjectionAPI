@@ -1,5 +1,6 @@
 package de.zortax.injection.mcp;// Created by leo on 27.05.18
 
+import de.zortax.injection.injector.Flags;
 import de.zortax.injection.mcp.gen.GenType;
 import de.zortax.injection.mcp.gen.WrapperClassBuilder;
 
@@ -163,7 +164,7 @@ public class WrappedClass {
             loadClassObject();
 
         System.out.println(className.replaceAll("\\.", "/"));
-        String directory = "/home/leo/Projects/IntelliJ/MinecraftInjectionAPI/src/main/java/de/zortax/injection/api/" + className.substring(0, className.lastIndexOf(".")).replaceAll("\\.", "/");
+        String directory = Flags.generateWrapperClasses + className.substring(0, className.lastIndexOf(".")).replaceAll("\\.", "/");
         File dir = new File(directory);
         dir.mkdirs();
         File f = new File("/home/leo/Projects/IntelliJ/MinecraftInjectionAPI/src/main/java/de/zortax/injection/api/" + className.replaceAll("\\.", "/") + ".java");
@@ -171,7 +172,7 @@ public class WrappedClass {
             f.createNewFile();
         }
 
-        WrapperClassBuilder wcb = WrapperClassBuilder.createWrappedClass("de.zortax.injection.api", className.replaceAll("\\.", "/"), GenType.CLASS);
+        WrapperClassBuilder wcb = WrapperClassBuilder.createWrappedClass(Flags.generatorParentPackage, className.replaceAll("\\.", "/"), GenType.CLASS);
 
         for (String field : getFieldNames()) {
 

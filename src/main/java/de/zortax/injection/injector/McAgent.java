@@ -61,11 +61,17 @@ public class McAgent {
             }
         }
 
-        try {
-            WrappedClass minecraft = McpManager.getWrappedClass("net/minecraft/client/Minecraft");
-            minecraft.writeWrapperClass();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (Flags.generateWrapperClasses != null) {
+            try {
+                String[] classesToGenerate = new String[]{
+                        "net/minecraft/client/Minecraft"
+                };
+                for (String c : classesToGenerate) {
+                    McpManager.getWrappedClass(c).writeWrapperClass();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }

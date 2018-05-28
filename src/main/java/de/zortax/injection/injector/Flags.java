@@ -12,7 +12,9 @@ public final class Flags {
     public static String agentJar = "MinecraftInjectionAPI.jar";
     public static String vm = "net.minecraft.launchwrapper.Launch";
     public static String loadHookClass = null;
-    public static String loadHookMethod =null;
+    public static String loadHookMethod = null;
+    public static String generateWrapperClasses = null;
+    public static String generatorParentPackage = "";
 
     public static void parseArgs(String[] args) {
 
@@ -35,6 +37,11 @@ public final class Flags {
                 loadHookClass = it.next();
             else if (c.equalsIgnoreCase("--load-hook-method") && it.hasNext())
                 loadHookMethod = it.next();
+            else if (c.equalsIgnoreCase("--generate-wrapper") && it.hasNext())
+                generateWrapperClasses = it.next();
+            else if (c.equalsIgnoreCase("--generator-parent-package") && it.hasNext())
+                generatorParentPackage = it.next();
+
 
         }
 
