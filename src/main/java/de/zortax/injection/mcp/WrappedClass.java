@@ -1,8 +1,14 @@
 package de.zortax.injection.mcp;// Created by leo on 27.05.18
 
+import de.zortax.injection.mcp.gen.GenType;
+import de.zortax.injection.mcp.gen.WrapperClassBuilder;
+
+import java.io.File;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -14,6 +20,8 @@ public class WrappedClass {
     private HashMap<String, String> fields;
     private HashMap<String, String> srgFunctions;
     private HashMap<String, String> functions;
+    private HashMap<String, String> srgToMethodDesc;
+    private HashMap<String, String> nameToMethodDesc;
 
     private Class classObject;
 
@@ -24,7 +32,12 @@ public class WrappedClass {
         this.fields = new HashMap<>();
         this.srgFunctions = new HashMap<>();
         this.functions = new HashMap<>();
+        this.srgToMethodDesc = new HashMap<>();
+        this.nameToMethodDesc = new HashMap<>();
+    }
 
+    public void setClassObject(Class clazz) {
+        this.classObject = clazz;
     }
 
     public void loadClassObject() {
@@ -46,12 +59,16 @@ public class WrappedClass {
         fields.put(name, srgName);
     }
 
-    public void putSrgFunctionName(String obfName, String srgName) {
-        srgFunctions.put(srgName.split("/")[srgName.split("/").length - 1], obfName.split("/")[1]);
+    public void putSrgFunctionName(String obfName, String srgName, String methodDescriptor) {
+        String srg = srgName.split("/")[srgName.split("/").length - 1];
+        srgToMethodDesc.put(srg, methodDescriptor);
+        srgFunctions.put(srg, obfName.split("/")[1]);
+
     }
 
     public void putFunctionName(String srgName, String name) {
         functions.put(name, srgName);
+        nameToMethodDesc.put(name, srgToMethodDesc.get(srgName));
     }
 
     public String getObfFunctionName(String name) {
@@ -115,10 +132,14 @@ public class WrappedClass {
     }
 
     public MinecraftInstance getStaticField(String name) {
+        return getField(name, null);
+    }
+
+    public MinecraftInstance getField(String name, Object instance) {
         try {
             Field f = classObject.getDeclaredField(this.getObfFieldName(name));
             f.setAccessible(true);
-            Object o = f.get(null);
+            Object o = f.get(instance);
             return new MinecraftInstance(McpManager.getWrappedClassByObfName(o.getClass().getName()), o);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
@@ -134,6 +155,54 @@ public class WrappedClass {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public void writeWrapperClass() throws Exception {
+
+        if (classObject == null)
+            loadClassObject();
+
+        System.out.println(className.replaceAll("\\.", "/"));
+        String directory = "/home/leo/Projects/IntelliJ/MinecraftInjectionAPI/src/main/java/de/zortax/injection/api/" + className.substring(0, className.lastIndexOf(".")).replaceAll("\\.", "/");
+        File dir = new File(directory);
+        dir.mkdirs();
+        File f = new File("/home/leo/Projects/IntelliJ/MinecraftInjectionAPI/src/main/java/de/zortax/injection/api/" + className.replaceAll("\\.", "/") + ".java");
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+
+        WrapperClassBuilder wcb = WrapperClassBuilder.createWrappedClass("de.zortax.injection.api", className.replaceAll("\\.", "/"), GenType.CLASS);
+
+        for (String field : getFieldNames()) {
+
+            Field rf = classObject.getDeclaredField(getObfFieldName(field));
+            WrappedClass wc = McpManager.getWrappedClassByObfName(rf.getType().getName());
+            String name = wc == null ? rf.getType().getName().replaceAll("\\.", "/") : wc.getClassName().replaceAll("\\.", "/");
+            while (name.startsWith("["))
+                name = name.replaceFirst("\\[", "");
+            wcb.addField(field, name, Modifier.isStatic(rf.getModifiers()), getArrayDimensions(rf.getType()));
+        }
+
+        for (String function : getFunctionNames()) {
+            Method m = classObject.getDeclaredMethod(getObfFunctionName(function));
+            wcb.addMethod(function, nameToMethodDesc.get(function), Modifier.isStatic(m.getModifiers()));
+        }
+
+        PrintWriter pw = new PrintWriter(f);
+        pw.print(wcb.build());
+        pw.flush();
+        pw.close();
+
+
+    }
+
+    public static int getArrayDimensions(Class arrayClass) {
+        int count = 0;
+        while ( arrayClass.isArray() ) {
+            count++;
+            arrayClass = arrayClass.getComponentType();
+        }
+        return count;
     }
 
 }

@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -82,7 +83,7 @@ public class McpManager {
                     System.out.println("Loading SRG mapping for method " + split[3].split("/")[split[3].split("/").length - 1] + "in class " + className + " ...");
                 WrappedClass wrappedClass = classes.get(className);
                 if (wrappedClass != null) {
-                    wrappedClass.putSrgFunctionName(split[1], split[3]);
+                    wrappedClass.putSrgFunctionName(split[1], split[3], split[4]);
                     functionClasses.put(split[3].split("/")[split[3].split("/").length - 1], className);
                 }
             }
@@ -124,11 +125,18 @@ public class McpManager {
         if (Flags.verbose)
             System.out.println("Done! All mappings loaded...");
 
-
     }
 
     public static WrappedClass getWrappedClassByObfName(String obfName) {
         return obfClasses.getOrDefault(obfName, null);
+    }
+
+    public static boolean hasObfName(String obfName) {
+        return obfClasses.containsKey(obfName);
+    }
+
+    public static HashMap<String, WrappedClass> getObfClasses() {
+        return obfClasses;
     }
 
     public static WrappedClass getWrappedClass(String name) {

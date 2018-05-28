@@ -3,6 +3,8 @@ package de.zortax.injection.injector;// Created by leo on 27.05.18
 import de.zortax.injection.mcp.McpManager;
 import de.zortax.injection.mcp.MinecraftInstance;
 import de.zortax.injection.mcp.WrappedClass;
+import de.zortax.injection.mcp.gen.GenType;
+import de.zortax.injection.mcp.gen.WrapperClassBuilder;
 
 import java.lang.instrument.Instrumentation;
 import java.lang.reflect.InvocationTargetException;
@@ -35,8 +37,15 @@ public class McAgent {
                 RuntimeInjector.class,
                 McpManager.class,
                 MinecraftInstance.class,
-                WrappedClass.class
+                WrappedClass.class,
+                WrapperClassBuilder.class,
+                GenType.class
         );
+
+        for (Class clazz : instrumentation.getAllLoadedClasses()) {
+            if (McpManager.hasObfName(clazz.getName()))
+                McpManager.getWrappedClassByObfName(clazz.getName()).setClassObject(clazz);
+        }
 
         if (Flags.loadHookClass != null && Flags.loadHookMethod != null) {
             try {
@@ -50,6 +59,13 @@ public class McAgent {
                     e.printStackTrace();
                 }
             }
+        }
+
+        try {
+            WrappedClass minecraft = McpManager.getWrappedClass("net/minecraft/client/Minecraft");
+            minecraft.writeWrapperClass();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
