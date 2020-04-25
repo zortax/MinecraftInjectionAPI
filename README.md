@@ -6,7 +6,7 @@
 
 A simple API using MCP deobfuscation mappings helping you to inject mods at runtime.
 
-With this library you can inject code into Minecraft at runtime! You can write a program, that does so after Minecraft (Vanilla) was already started, but yo could also use it to hook into minecraft methods from any other context (e.g. Labymod / 5zigMod addons, Forge, Liteloader). To deal with an obfuscatet minecraft environment the library includes a reflection wrapper that automatically downloads MCP deobfuscation mapping an gives you reflective access to minecraft classes by using their corresponding MCP names.
+With this library you can inject code into Minecraft at runtime! You can write a program, that does so after Minecraft (Vanilla) was already started, but you could also use it to hook into minecraft methods from any other context (e.g. Labymod / 5zigMod addons, Forge, Liteloader). To deal with an obfuscated minecraft environment the library includes a reflection wrapper that automatically downloads MCP deobfuscation mapping and gives you reflective access to minecraft classes by using their corresponding MCP names.
 
 Maven:
 ```xml
