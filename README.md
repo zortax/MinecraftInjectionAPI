@@ -54,7 +54,7 @@ public class MinecraftTransformer {
         StringBuilder sb = new StringBuilder();
         for (String arg : args)
             sb.append(arg).append(";");
-        // male the agemt execute out onAgentLoaded() method after it os done loading
+        // male the agemt execute out onAgentLoaded() method after it is done loading
         sb.append("--load-hook-class;de.zortax.injection.example.transformer.MinecraftTransformer;--load-hook-method;onAgentLoaded");
         // attach the agent to the minecraft VM
         RuntimeInjector.attachToVm(sb.toString());
